@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Fruit Guide - Benefits & Considerations</title>
+    
+    <!-- External Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS Styles -->
+    <style>
+        /* CSS Section - All styling separated here */
+        * {
+            font-family: 'Inter', sans-serif;
+
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .hero-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid #4CAF50;
+        }
+        
+        .search-container {
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-container:focus-within {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+        
+        .fruit-card {
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .fruit-card.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .fruit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .fruit-image {
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 3px solid #4CAF50;
+        }
+        
+        .benefits-section {
+            background: #f0f9ff;
+            border-left: 4px solid #10b981;
+        }
+        
+        .concerns-section {
+            background: #fff7ed;
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .ingredients-section {
+            background: #f8fafc;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .section-icon {
+            font-size: 1.2rem;
+            width: 24px;
+            display: inline-block;
+        }
+        
+        
+        /* Modal Animation */
+        #fruitModal > div {
+            transition: all 0.2s ease-in-out;
+            transform: scale(0.95);
+            opacity: 0;
+        }
+        
+        #fruitModal > div.scale-100 {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        /* Line clamp for text preview with cross-browser support */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            /* Standard property for modern browsers */
+            line-clamp: 2;
+            /* Fallback for older browsers */
+            max-height: 3em;
+            text-overflow: ellipsis;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-500 to-purple-600">
+    <!-- HTML Structure Section - Clean semantic markup -->
+    
+    <!-- Hero Header -->
+    <header class="hero-section text-center py-12 px-6">
+        <h1 class="hero-title text-5xl font-bold text-gray-800 mb-4">
+            <a href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48cGF0aCBmaWxsPSIjNGNiZjUwIiBkPSJNMzUyIDI0MGMwIDcwLjctNTcuMyAxMjgtMTI4IDEyOHMtMTI4LTU3LjMtMTI4LTEyOFMxNTMuMyAxMTIgMjI0IDExMnMxMjggNTcuMyAxMjggMTI4em05MiAzMkMwIDQ0OCAwIDM1MiA5NiAzNTJjNDQuMiAwIDY5LjIgMjQuMiAxNDQgMjQuMiA3NC44IDAgMTE4LjYtMjQuMiAxNDQtMjQuMiA5NiAwIDk2IDk2IDk2IDI1NnYxNkg0NDh2LTE2YzAtNzAuNy01Ny4zLTEyOC0xMjgtMTI4cy0xMjggNTcuMy0xMjggMTI4djE2SDE0NHYtMTZ6Ii8+PC9zdmc+" download="fruit-logo.svg" class="inline-block hover:opacity-80 transition-opacity duration-200">
+                <i class="fas fa-apple-alt text-green-500 text-5xl md:text-6xl block mb-4" title="Click to download logo"></i>
+            </a>
+            Complete Fruit Guide
+        </h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Discover the benefits and considerations of your favorite fruits with detailed nutritional information
+        </p>
+    </header>
+
+    <main class="container mx-auto px-6 pb-12">
+        <!-- Search Section -->
+        <section class="mb-12">
+            <div class="search-container max-w-md mx-auto bg-white rounded-full p-2 flex items-center">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search for any fruit..." 
+                    class="flex-1 px-6 py-3 rounded-full outline-none text-lg"
+                >
+                <button 
+                    id="searchBtn" 
+                    class="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 transition-colors duration-200"
+                >
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="resultsSection">
+            <div id="fruitsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Fruit cards will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="text-center text-white text-xl py-12 hidden">
+            <i class="fas fa-search-minus text-4xl mb-4"></i>
+            <p>No fruits found. Try searching for "apple", "orange", or "banana".</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white bg-opacity-95 text-center py-8 mt-16">
+        <p class="text-gray-600">
+            <i class="fas fa-heart text-red-500 mx-2"></i>
+            © 2024 Complete Fruit Guide. Stay healthy and informed! POWERED BY s_a_p_16_111
+        </p>
+    </footer>
+
+    <!-- Full Screen Modal -->
+    <div id="fruitModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="relative">
+                <button id="closeModal" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="p-6">
+                    <div class="md:flex gap-6">
+                        <div class="md:w-1/2 mb-6 md:mb-0">
+                            <img id="modalFruitImage" src="" alt="Fruit" class="w-full h-64 md:h-96 object-cover rounded-lg">
+                        </div>
+                        <div class="md:w-1/2">
+                            <h2 id="modalFruitName" class="text-3xl font-bold text-gray-800 mb-4"></h2>
+                            
+                            <div class="mb-6">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-2">🍎 Ingredients</h3>
+                                <p id="modalFruitIngredients" class="text-gray-600"></p>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h3 class="text-xl font-semibold text-green-600 mb-2">✅ Benefits</h3>
+                                <p id="modalFruitBenefits" class="text-gray-600"></p>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h3 class="text-xl font-semibold text-yellow-600 mb-2">⚠️ Concerns</h3>
+                                <p id="modalFruitConcerns" class="text-gray-600"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Section - All functionality separated here -->
+    <script>
+        // Comprehensive Fruit Database with Benefits & Concerns
+        const fruitsData = [
+            {
+                name: "Apple",
+                image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                ingredients: "Rich in fiber, vitamin C, potassium, antioxidants (quercetin, catechin), natural sugars (fructose, glucose), and pectin.",
+                benefits: "Supports heart health, aids digestion, helps regulate blood sugar, promotes weight management, boosts immune system, and may reduce risk of stroke.",
+                concerns: "Apple seeds contain amygdalin (releases cyanide when digested). High sugar content may be concerning for diabetics. Pesticide residue if not organic. May cause digestive issues if consumed in large quantities."
+            },
+            {
+                name: "Orange",
+                image: "https://upload.wikimedia.org/wikipedia/commons/e/e3/Oranges_-_whole-halved-segment.jpg",
+                ingredients: "Excellent source of vitamin C, folate, fiber, potassium, calcium, flavonoids (hesperidin, naringenin), and natural citrus oils.",
+                benefits: "Boosts immune system, supports collagen production, aids iron absorption, promotes heart health, helps prevent kidney stones, and supports brain function.",
+                concerns: "High acidity can damage tooth enamel. May interact with blood thinning medications. Can trigger citrus allergies. High sugar content. May cause heartburn in sensitive individuals."
+            },
+            {
+                name: "Watermelon",
+                image: "https://media.post.rvohealth.io/wp-content/uploads/2020/09/AN335-Watermelon-732x549-Thumb-732x549.jpg",
+                ingredients: "High water content (92%), lycopene, vitamin C, vitamin A, potassium, magnesium, citrulline, and natural sugars.",
+                benefits: "Excellent hydration, supports heart health, may reduce muscle soreness, promotes healthy skin, supports kidney function, and has anti-inflammatory properties.",
+                concerns: "Very high sugar content (can spike blood sugar). May cause digestive upset if eaten in large quantities. Seeds can be choking hazard. High FODMAP fruit (may cause IBS symptoms)."
+            },
+            {
+                name: "Banana",
+                image: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                ingredients: "Rich in potassium, vitamin B6, vitamin C, fiber, folate, magnesium, natural sugars, and resistant starch (in unripe bananas).",
+                benefits: "Supports heart health, aids muscle function, promotes digestive health, helps regulate blood pressure, boosts energy, and supports brain function.",
+                concerns: "High in natural sugars (may affect blood sugar). Can trigger latex allergies. High potassium may be problematic for kidney disease patients. May cause constipation if unripe. Migraine trigger for some people."
+            },
+            {
+                name: "Strawberry",
+                image: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                ingredients: "Extremely high in vitamin C, manganese, folate, anthocyanins, ellagic acid, fiber, and antioxidants.",
+                benefits: "Powerful antioxidant properties, supports immune system, promotes heart health, may help regulate blood sugar, supports brain health, and has anti-inflammatory effects.",
+                concerns: "Common allergen (can cause oral allergy syndrome). High pesticide residue if not organic. Seeds on surface may irritate diverticulitis. Natural salicylates may cause reactions in sensitive individuals."
+            },
+            {
+                name: "Grapes",
+                image: "https://images.unsplash.com/photo-1537640538966-79f369143f8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                ingredients: "Rich in resveratrol, flavonoids, vitamin C, vitamin K, potassium, antioxidants, and natural sugars.",
+                benefits: "Supports heart health, has anti-aging properties, may improve brain function, supports immune system, has anti-inflammatory effects, and may help prevent certain cancers.",
+                concerns: "Very high in natural sugars (blood sugar spikes). High pesticide residue if not organic. Choking hazard for young children. May interact with blood-thinning medications. Can cause digestive issues in large quantities."
+            },
+            {
+                name: "Mango",
+                image: "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                ingredients: "High in vitamin A, vitamin C, folate, fiber, potassium, beta-carotene, and antioxidants (mangiferin).",
+                benefits: "Supports eye health, boosts immune system, promotes healthy skin, aids digestion, has anti-inflammatory properties, and supports heart health.",
+                concerns: "High sugar content. Skin and leaves contain urushiol (same as poison ivy) - may cause allergic reactions. Can interact with certain medications. May cause digestive upset in large quantities."
+            },
+            {
+                name: "Pineapple",
+                image: "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                ingredients: "Rich in bromelain enzyme, vitamin C, manganese, vitamin B6, thiamine, folate, and antioxidants.",
+                benefits: "Aids digestion, has anti-inflammatory properties, supports immune system, promotes wound healing, may reduce arthritis symptoms, and supports bone health.",
+                concerns: "High acidity can irritate mouth and stomach. Bromelain can interact with blood thinners. May cause allergic reactions. High sugar content. Can trigger symptoms in people with histamine intolerance."
+            },
+            {
+                name: "Blueberry",
+                image: "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                ingredients: "Extremely high in anthocyanins, vitamin C, vitamin K, manganese, fiber, and various antioxidants.",
+                benefits: "Powerful brain health support, improves memory, supports heart health, has anti-aging properties, may help prevent UTIs, and supports eye health.",
+                concerns: "May interact with blood-thinning medications due to vitamin K. Can cause digestive upset in large quantities. Natural salicylates may cause reactions. Pesticide residue concerns if not organic."
+            },
+            {
+                name: "Avocado",
+                image: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                ingredients: "Rich in healthy monounsaturated fats, fiber, potassium, vitamin K, vitamin E, folate, and oleic acid.",
+                benefits: "Supports heart health, aids nutrient absorption, promotes healthy skin, supports eye health, helps regulate cholesterol, and provides sustained energy.",
+                concerns: "Very high in calories (320 per avocado). Can cause latex-fruit syndrome allergic reactions. High potassium may be problematic for kidney patients. Pit and leaves are toxic. May interact with blood thinners."
+            },
+            {
+                name: "Kiwi",
+                image: "https://images.unsplash.com/photo-1585059895524-72359e06133a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                ingredients: "Exceptionally high in vitamin C, vitamin K, vitamin E, folate, potassium, fiber, and actinidain enzyme.",
+                benefits: "Powerful immune support, aids digestion, supports heart health, promotes healthy skin, helps regulate blood pressure, and has anti-inflammatory properties.",
+                concerns: "Common allergen (can cause oral allergy syndrome). May interact with blood-thinning medications. Can cause digestive issues due to actinidain enzyme. Skin may contain irritating compounds. Cross-reactivity with latex allergies."
+            },
+            {
+                name: "Cherry",
+                image: "https://images.unsplash.com/photo-1528821128474-27f963b062bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                ingredients: "High in anthocyanins, vitamin C, potassium, fiber, melatonin, and anti-inflammatory compounds.",
+                benefits: "Supports sleep quality, reduces inflammation, may help with exercise recovery, supports heart health, has anti-aging properties, and may help reduce gout symptoms.",
+                concerns: "Pits contain cyanogenic compounds (toxic if consumed). High sugar content. May interact with certain medications. Can cause digestive upset in large quantities. Choking hazard with pits."
+            }
+        ];
+
+        // DOM Element References
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const fruitsContainer = document.getElementById('fruitsContainer');
+        const noResults = document.getElementById('noResults');
+        const searchContainer = document.querySelector('.search-container');
+        const modal = document.getElementById('fruitModal');
+        const closeModal = document.getElementById('closeModal');
+        const modalFruitImage = document.getElementById('modalFruitImage');
+        const modalFruitName = document.getElementById('modalFruitName');
+        const modalFruitIngredients = document.getElementById('modalFruitIngredients');
+        const modalFruitBenefits = document.getElementById('modalFruitBenefits');
+        const modalFruitConcerns = document.getElementById('modalFruitConcerns');
+
+        // Utility Functions
+
+        function createFruitCard(fruit) {
+            try {
+                if (!fruit || typeof fruit !== 'object') {
+                    console.error('Invalid fruit data:', fruit);
+                    return document.createElement('div'); // Return empty div for invalid data
+                }
+
+                const card = document.createElement('div');
+                card.className = 'fruit-card bg-white rounded-xl shadow-lg overflow-hidden';
+                
+                // Create a template string for the card content
+                const cardContent = `
+                    <div class="h-full flex flex-col">
+                        <img 
+                            src="${fruit.image || ''}" 
+                            alt="${fruit.name || 'Fruit'}" 
+                            class="fruit-image w-full h-64 object-cover"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/400x250/4CAF50/white?text=${(fruit.name || '').replace(/\s+/g, '+')}'"
+                        >
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+                                ${fruit.name || 'Fruit'}
+                            </h2>
+                            
+                            <div class="space-y-4 flex-1">
+                                <!-- Ingredients Preview -->
+                                <div class="ingredients-section p-4 rounded-lg">
+                                    <h3 class="font-semibold text-blue-700 mb-2 flex items-center">
+                                        <i class="fas fa-seedling section-icon mr-2"></i>
+                                        Key Ingredients
+                                    </h3>
+                                    <p class="text-gray-700 text-sm line-clamp-2">${fruit.ingredients || 'No ingredients information available.'}</p>
+                                </div>
+                                
+                                <!-- Benefits Preview -->
+                                <div class="benefits-section p-4 rounded-lg">
+                                    <h3 class="font-semibold text-green-700 mb-2 flex items-center">
+                                        <i class="fas fa-heart section-icon mr-2"></i>
+                                        Health Benefits
+                                    </h3>
+                                    <p class="text-gray-700 text-sm line-clamp-2">${fruit.benefits || 'No benefits information available.'}</p>
+                                </div>
+                            </div>
+                            
+                            <!-- View More Button -->
+                            <button class="view-more-btn mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md transition-colors">
+                                View Full Details
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Set the inner HTML of the card
+                card.innerHTML = cardContent;
+                
+                // Make the entire card clickable
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', (e) => {
+                    // Don't trigger if clicking on the button to avoid double triggers
+                    if (!e.target.closest('.view-more-btn')) {
+                        openFruitModal(fruit);
+                    }
+                });
+                
+                // Keep button click handler as well
+                const viewMoreBtn = card.querySelector('.view-more-btn');
+                if (viewMoreBtn) {
+                    viewMoreBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openFruitModal(fruit);
+                    });
+                }
+                
+                return card;
+                
+            } catch (error) {
+                console.error('Error creating fruit card:', error);
+                const errorCard = document.createElement('div');
+                errorCard.className = 'p-4 bg-red-100 text-red-800 rounded';
+                errorCard.textContent = 'Error loading fruit information';
+                return errorCard;
+            }
+        }
+
+        function displayFruits(fruits) {
+            if (fruits.length === 0) {
+                fruitsContainer.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            fruitsContainer.innerHTML = '';
+            
+            // Create and append each card
+            fruits.forEach(fruit => {
+                const card = createFruitCard(fruit);
+                if (card) {
+                    fruitsContainer.appendChild(card);
+                }
+            });
+            
+            // Animate cards with staggered delay
+            document.querySelectorAll('.fruit-card').forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('animate');
+                }, index * 100);
+            });
+        }
+
+        function filterFruits(searchTerm) {
+            if (!searchTerm.trim()) {
+                return fruitsData;
+            }
+            
+            const term = searchTerm.toLowerCase();
+            return fruitsData.filter(fruit => 
+                fruit.name.toLowerCase().includes(term) ||
+                fruit.ingredients.toLowerCase().includes(term) ||
+                fruit.benefits.toLowerCase().includes(term) ||
+                fruit.concerns.toLowerCase().includes(term)
+            );
+        }
+
+        function performSearch() {
+            const searchTerm = searchInput.value;
+            const filteredFruits = filterFruits(searchTerm);
+            displayFruits(filteredFruits);
+        }
+
+        // Modal Functions
+        function openFruitModal(fruit) {
+            // Update modal content
+            modalFruitImage.src = fruit.image;
+            modalFruitImage.alt = fruit.name;
+            modalFruitName.textContent = fruit.name;
+            modalFruitIngredients.textContent = fruit.ingredients;
+            modalFruitBenefits.textContent = fruit.benefits;
+            modalFruitConcerns.textContent = fruit.concerns;
+            
+            // Show the modal with animation
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            
+            // Trigger animation after a small delay to allow display to update
+            setTimeout(() => {
+                const modalContent = modal.querySelector('div');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        }
+        
+        function closeFruitModal() {
+            // Remove animation class first
+            const modalContent = modal.querySelector('div');
+            modalContent.classList.remove('scale-100');
+            
+            // Hide the modal after animation completes
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            }, 200);
+        }
+        
+        // Close modal when clicking outside content
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeFruitModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeFruitModal();
+            }
+        });
+        
+        // Close button event
+        closeModal.addEventListener('click', closeFruitModal);
+
+        // Initialize the page with all fruits
+        document.addEventListener('DOMContentLoaded', () => {
+            displayFruits(fruitsData);
+        });
+
+        // Event Listeners
+        searchBtn.addEventListener('click', performSearch);
+
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchInput.debounceTimer);
+            searchInput.debounceTimer = setTimeout(performSearch, 300);
+        });
+
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            displayFruits(fruitsData);
+            
+            // Add focus effect to search input
+            searchInput.addEventListener('focus', function() {
+                searchContainer.classList.add('ring-4', 'ring-green-200');
+            });
+            
+            searchInput.addEventListener('blur', function() {
+                searchContainer.classList.remove('ring-4', 'ring-green-200');
+            });
+        });
+
+        // Animate cards when they come into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe all fruit cards
+        document.querySelectorAll('.fruit-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
